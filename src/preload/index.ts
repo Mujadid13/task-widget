@@ -1,11 +1,16 @@
 import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
-import type { Task } from '../renderer/src/types'
+import type { Corner, Task } from '../renderer/src/types'
 
 // Custom APIs for renderer
 const api = {
   /** Ask the main process to resize the window to fit the card. */
   fitWindow: (width: number, height: number): void => ipcRenderer.send('fit-window', width, height),
+  /** Corner grip: the main process follows the cursor between these two calls. */
+  resizeStart: (corner: Corner): void => ipcRenderer.send('resize-start', corner),
+  resizeEnd: (): void => ipcRenderer.send('resize-end'),
+  /** Scale the widget up or down by a step (keyboard resizing). */
+  zoomBy: (delta: number): void => ipcRenderer.send('zoom-by', delta),
   loadTasks: (): Promise<Task[]> => ipcRenderer.invoke('tasks:load'),
   saveTasks: (tasks: Task[]): Promise<void> => ipcRenderer.invoke('tasks:save', tasks)
 }

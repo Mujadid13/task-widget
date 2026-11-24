@@ -7,6 +7,9 @@ import { TaskMeta } from './components/TaskMeta'
 import { TaskEditor, type TaskPatch } from './components/TaskEditor'
 import { TaskActions, TaskRow } from './components/TaskRow'
 import { Board } from './components/Board'
+import { ColorPicker } from './components/ColorPicker'
+import { ResizeGrips } from './components/ResizeGrips'
+import { applyAccent, loadAccent, saveAccent } from './lib/theme'
 
 const clock = new Intl.DateTimeFormat(undefined, { hour: '2-digit', minute: '2-digit' })
 // Starting values for the add form.
@@ -24,6 +27,13 @@ function App(): React.JSX.Element {
   const [boardOpen, setBoardOpen] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
   const [adding, setAdding] = useState(false)
+  const [accent, setAccent] = useState(loadAccent)
+  const [pickingColor, setPickingColor] = useState(false)
+
+  useEffect(() => {
+    applyAccent(accent)
+    saveAccent(accent)
+  }, [accent])
   const cardRef = useRef<HTMLElement>(null)
 
   // Keep the window shrink-wrapped to the card. Width is the card's max for the current
@@ -102,7 +112,7 @@ function App(): React.JSX.Element {
       ref={cardRef}
       // Fills the window up to a max width (wider in board mode). @container lets children
       // adapt to the card's actual width (the @sm:/@2xl: classes) rather than the window's.
-      className={`@container flex w-full ${boardOpen ? 'max-w-[1040px]' : 'max-w-[460px]'} flex-col gap-6 rounded-3xl border border-teal-300/20 bg-slate-950/75 p-5 text-lg sm:p-8 text-slate-100 shadow-[0_0_40px_-8px_rgba(45,212,191,0.35)] backdrop-blur-xl`}
+      className={`@container relative flex w-full ${boardOpen ? 'max-w-[1040px]' : 'max-w-[460px]'} flex-col gap-6 rounded-3xl border border-accent-300/20 bg-slate-950/75 p-5 text-lg sm:p-8 text-slate-100 shadow-[0_0_40px_-8px_color-mix(in_oklab,var(--accent)_35%,transparent)] backdrop-blur-xl`}
     >
       {/* The clock is the hidden drag handle for moving the widget around the desktop. */}
       <header className="[-webkit-app-region:drag]">
@@ -117,7 +127,7 @@ function App(): React.JSX.Element {
         // key = task id, so the card re-mounts and slides in when the next task takes over.
         <section
           key={current.id}
-          className="animate-slide-in rounded-2xl border border-emerald-300/25 bg-gradient-to-br from-teal-400/15 to-sky-500/10 p-5"
+          className="animate-slide-in rounded-2xl border border-accent-300/25 bg-gradient-to-br from-accent-400/15 to-accent-400/5 p-5"
         >
           {editingId === current.id ? (
             <TaskEditor
@@ -129,7 +139,7 @@ function App(): React.JSX.Element {
           ) : (
             <>
               <div className="flex items-start justify-between">
-                <p className="text-xs font-bold tracking-[0.2em] text-teal-300">DO THIS NOW</p>
+                <p className="text-xs font-bold tracking-[0.2em] text-accent-300">DO THIS NOW</p>
                 <TaskActions
                   onEdit={() => setEditingId(current.id)}
                   onDelete={() => remove(current)}
@@ -144,7 +154,7 @@ function App(): React.JSX.Element {
               </div>
               <button
                 onClick={() => move(current.id, 'done')}
-                className="mt-5 w-full rounded-xl bg-teal-400/90 py-2.5 text-lg font-semibold text-slate-950 transition hover:bg-teal-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-200"
+                className="mt-5 w-full rounded-xl bg-accent-400/90 py-2.5 text-lg font-semibold text-accent-ink transition hover:bg-accent-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-200"
               >
                 Done
               </button>
@@ -152,7 +162,7 @@ function App(): React.JSX.Element {
           )}
         </section>
       ) : (
-        <section className="animate-slide-in rounded-2xl border border-emerald-300/25 p-5 text-center text-xl text-slate-200">
+        <section className="animate-slide-in rounded-2xl border border-accent-300/25 p-5 text-center text-xl text-slate-200">
           All clear. Nothing left to do 🎉
         </section>
       )}
@@ -170,7 +180,7 @@ function App(): React.JSX.Element {
 
       <footer className="flex flex-col gap-2">
         {adding ? (
-          <div className="rounded-xl border border-teal-300/25 bg-slate-900/60 p-3">
+          <div className="rounded-xl border border-accent-300/25 bg-slate-900/60 p-3">
             <TaskEditor
               categoryOptions={categoryOptions}
               task={newTask}
@@ -182,18 +192,33 @@ function App(): React.JSX.Element {
         ) : (
           <button
             onClick={() => setAdding(true)}
-            className="rounded-xl border border-dashed border-slate-500/40 py-2 text-slate-300 hover:border-teal-300/60 hover:text-teal-200"
+            className="rounded-xl border border-dashed border-slate-500/40 py-2 text-slate-300 hover:border-accent-300/60 hover:text-accent-200"
           >
             + Add task
           </button>
         )}
-        <button
-          onClick={() => setBoardOpen((b) => !b)}
-          className="self-end text-sm text-slate-400 hover:text-teal-200"
-        >
-          {boardOpen ? 'Close board' : `Board (${tasks.length})`}
-        </button>
+        {pickingColor && <ColorPicker value={accent} onChange={setAccent} />}
+        <div className="flex items-center justify-between">
+          <button
+            onClick={() => setPickingColor((p) => !p)}
+            aria-label="Change accent color"
+            aria-expanded={pickingColor}
+            title="Color"
+            className="flex items-center gap-2 text-sm text-slate-400 hover:text-accent-200"
+          >
+            <span className="size-3.5 rounded-full bg-accent-400" />
+            Color
+          </button>
+          <button
+            onClick={() => setBoardOpen((b) => !b)}
+            className="text-sm text-slate-400 hover:text-accent-200"
+          >
+            {boardOpen ? 'Close board' : `Board (${tasks.length})`}
+          </button>
+        </div>
       </footer>
+
+      <ResizeGrips />
     </main>
   )
 }

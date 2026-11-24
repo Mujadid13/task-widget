@@ -3,7 +3,7 @@ import { TaskMeta } from './TaskMeta'
 import { TaskEditor, type TaskPatch } from './TaskEditor'
 
 const iconButton =
-  'rounded-md p-1.5 text-slate-400 hover:bg-slate-700/50 focus-visible:outline-2 focus-visible:outline-teal-200'
+  'rounded-md p-1.5 text-slate-400 hover:bg-slate-700/50 focus-visible:outline-2 focus-visible:outline-accent-200'
 
 /** Pencil + trash buttons, shared by list rows and the "Do this now" card. */
 export function TaskActions({
@@ -21,7 +21,7 @@ export function TaskActions({
         onClick={onEdit}
         aria-label="Edit task"
         title="Edit"
-        className={`${iconButton} hover:text-teal-200`}
+        className={`${iconButton} hover:text-accent-200`}
       >
         <svg
           viewBox="0 0 24 24"
@@ -92,7 +92,7 @@ export function TaskRow({
     <li
       draggable
       onDragStart={(e) => e.dataTransfer.setData('text/plain', task.id)}
-      className="group relative cursor-grab border-l-2 border-sky-300/30 pl-3 active:cursor-grabbing"
+      className="group relative cursor-grab border-l-2 border-accent-300/30 pl-3 active:cursor-grabbing"
     >
       <div>
         <p className={`break-words ${done ? 'text-slate-400 line-through' : 'text-slate-100'}`}>

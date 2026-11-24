@@ -1,10 +1,9 @@
 {
   "name": "task-widget",
   "version": "1.0.0",
-  "description": "An Electron application with React and TypeScript",
+  "description": "A desktop widget that shows what to do next",
   "main": "./out/main/index.js",
-  "author": "example.com",
-  "homepage": "https://electron-vite.org",
+  "author": "Mujadid Sana",
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint --cache .",

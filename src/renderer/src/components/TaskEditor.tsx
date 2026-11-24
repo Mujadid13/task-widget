@@ -14,7 +14,7 @@ const toLocalInput = (iso?: string): string => {
 const CUSTOM = '__custom' // select value that reveals the free-text category box
 
 const field =
-  'w-full rounded-lg border border-slate-500/30 bg-slate-900/70 px-2 py-1.5 text-sm text-slate-100 focus:border-teal-300/60 focus:outline-none'
+  'w-full rounded-lg border border-slate-500/30 bg-slate-900/70 px-2 py-1.5 text-sm text-slate-100 focus:border-accent-300/60 focus:outline-none'
 
 /** Form for adding or editing a task. Enter saves, Escape cancels. */
 export function TaskEditor({
@@ -88,7 +88,7 @@ export function TaskEditor({
         <button
           type="button"
           onClick={() => setHasDue(true)}
-          className="self-start rounded-lg px-1 py-0.5 text-sm text-slate-400 hover:text-teal-200"
+          className="self-start rounded-lg px-1 py-0.5 text-sm text-slate-400 hover:text-accent-200"
         >
           + Add due date
         </button>
@@ -147,7 +147,7 @@ export function TaskEditor({
         </button>
         <button
           type="submit"
-          className="rounded-lg bg-teal-400/90 px-3 py-1.5 text-sm font-semibold text-slate-950 hover:bg-teal-300"
+          className="rounded-lg bg-accent-400/90 px-3 py-1.5 text-sm font-semibold text-accent-ink hover:bg-accent-300"
         >
           {submitLabel}
         </button>

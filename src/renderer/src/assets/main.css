@@ -1,5 +1,16 @@
 @import 'tailwindcss';
 
+/* Accent palette, all derived from --accent (set at runtime from the user's choice, see lib/theme.ts).
+   "inline" makes utilities like bg-accent-400 read the live variable. */
+@theme inline {
+  /* Lighter shades (text, borders) start from a readable version of the accent, so a dark
+     custom color still gives legible text. Bright presets pass as they are. */
+  --color-accent-200: color-mix(in oklab, var(--accent-text) 55%, white);
+  --color-accent-300: color-mix(in oklab, var(--accent-text) 80%, white);
+  --color-accent-400: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+}
+
 @theme {
   --animate-slide-in: slide-in 350ms ease-out;
 
@@ -23,8 +34,11 @@
 
 /* On :root so the window's own scrollbar is dark too, not just inner lists. */
 :root {
+  --accent: #2dd4bf; /* default turquoise; replaced at startup */
+  --accent-ink: #020617;
+  --accent-text: #2dd4bf;
   color-scheme: dark;
-  scrollbar-color: rgb(94 234 212 / 0.3) transparent;
+  scrollbar-color: color-mix(in oklab, var(--accent) 30%, transparent) transparent;
 }
 
 * {

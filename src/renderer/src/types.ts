@@ -1,6 +1,7 @@
 // Built-in categories, plus anything the user types via "Custom…".
 export type Category = string
 export type Status = 'backlog' | 'in-progress' | 'done'
+export type Corner = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' // resize grips
 
 export interface Task {
   id: string

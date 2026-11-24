@@ -1,4 +1,4 @@
-appId: com.electron.app
+appId: com.mujadidsana.taskwidget
 productName: task-widget
 directories:
   buildResources: build
@@ -14,9 +14,10 @@ asarUnpack:
 win:
   executableName: task-widget
 nsis:
-  artifactName: ${name}-${version}-setup.${ext}
-  shortcutName: ${productName}
-  uninstallDisplayName: ${productName}
+  # No version in the name, so .../releases/latest/download/task-widget-setup.exe always gets the newest.
+  artifactName: ${name}-setup.${ext}
+  shortcutName: Task Widget
+  uninstallDisplayName: Task Widget
   createDesktopShortcut: always
 mac:
   entitlementsInherit: build/entitlements.mac.plist

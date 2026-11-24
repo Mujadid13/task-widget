@@ -36,7 +36,7 @@ export function Board({
               onMove(e.dataTransfer.getData('text/plain'), status)
             }}
             className={`flex max-h-80 flex-col @2xl:h-[min(30rem,60vh)] @2xl:max-h-none rounded-xl border p-3 transition-colors ${
-              over === status ? 'border-teal-300/60 bg-teal-400/10' : 'border-slate-500/15'
+              over === status ? 'border-accent-300/60 bg-accent-400/10' : 'border-slate-500/15'
             }`}
           >
             <h3 className="mb-2 flex justify-between text-xs font-bold tracking-[0.2em] text-slate-400">
